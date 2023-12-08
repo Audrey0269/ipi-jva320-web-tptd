@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<html lang="en">
+
+<!--
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Aide à domicile RH - gestion des salariés</title>
     <link rel="stylesheet" href="./static/bootstrap.min.css">
     <link rel="stylesheet" href="./static/font-awesome.css">
 </head>
+-->
+
+<span th:insert="~{common :: head}"></span>
+
 <body>
 
+<div th:insert="~{common :: nav}"></div>
+
+<!--
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="http://localhost:8080/">Aide à domicile RH - gestion des salariés</a>
@@ -29,6 +38,7 @@
         </div>
     </nav>
 </div>
+-->
 
 <div class="container mt-2">
     <div class="jumbotron">

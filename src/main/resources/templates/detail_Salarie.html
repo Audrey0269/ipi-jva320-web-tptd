@@ -1,13 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--
 <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
     <title>Gestion des salariés</title>
     <link rel="stylesheet" href="/static/bootstrap.min.css">
     <link rel="stylesheet" href="./static/font-awesome.css">
 </head>
+-->
+
+<span th:insert="~{common :: head}"></span>
+
 <body>
 
+<div th:insert="~{common :: nav}"></div>
+<!--
 <div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="http://localhost:8080/">Gestion des salariés</a>
@@ -25,23 +32,23 @@
                     <input name="nom" class="form-control" placeholder="Rechercher un nom" type="text">
                 </div>
                 <button type="submit" class="btn btn-outline-success ml-2 my-2 my-sm-0">Rechercher</button>
-
             </form>
         </div>
     </nav>
 </div>
+-->
 
 <div class="container">
     <div th:text="#{msg.salarie}"></div><!-- TODO better messages example -->
 
     <h2>Détail du salarié</h2>
 
-    <form id="saveForm" th:action="@{actionUrl}" method="post" class="row" >
+    <form id="saveForm" th:action="${salarie} == null ? 'http://localhost:8080/salaries/save' : 'http://localhost:8080/salaries/{id}'" method="post" class="row" >
 
         <div class="col-lg-6">
             <div class="form-group">
                 <label class="form-control-label" for="id">ID</label>
-                <input type="text" th:value="${salarie.id}" class="form-control" name="id" id="id" disabled="true">
+                <input type="text" th:value="${salarie} != null ? ${salarie.id}" class="form-control" name="id" id="id" readonly="true">
 
                 <label class="form-control-label" for="nom">Nom</label>
                 <input type="text" th:value="${salarie} != null ? ${salarie.nom}" value="Jean Dupont" class="form-control" name="nom" id="nom">
@@ -129,10 +136,10 @@
             <a href="/salaries/10/delete" class="btn btn-danger">Supprimer</a>
         </div>-->
         <div class="col-lg-6" th:switch="${id} != null">
-            <input form="saveForm" class="btn btn-primary" type="submit" value="Enregistrer" th:case="true" th:action="@{actionUrl}">
-            <input form="saveForm" class="btn btn-primary" type="submit" value="Créer" th:case="*" th:action="@{actionUrl}">
+            <input form="saveForm" class="btn btn-primary" type="submit" value="Enregistrer" th:case="true">
+            <input form="saveForm" class="btn btn-primary" type="submit" value="Créer" th:case="*">
 
-            <a href="/salaries/1/delete" class="btn btn-danger" th:action="@{actionUrl}">Supprimer</a>
+            <a th:href="|/salaries/${id}/delete|" class="btn btn-danger">Supprimer</a>
         </div>
     </div>
 

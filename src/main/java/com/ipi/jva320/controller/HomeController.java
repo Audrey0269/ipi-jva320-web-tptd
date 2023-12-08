@@ -17,7 +17,7 @@ public class HomeController {
     {
         //long salarieNb = salarieAideADomicileService.countSalaries();
         model.put("nbrSalarie", "(" + salarieAideADomicileService.countSalaries() + " salarié(s))");
-        return "home";
+        return "/home";
     }
 }
 

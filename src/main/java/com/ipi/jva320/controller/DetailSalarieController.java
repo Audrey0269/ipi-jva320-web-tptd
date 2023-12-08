@@ -4,9 +4,11 @@ import com.ipi.jva320.exception.SalarieException;
 import com.ipi.jva320.model.SalarieAideADomicile;
 import com.ipi.jva320.service.SalarieAideADomicileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityExistsException;
 import java.time.LocalDate;
@@ -41,57 +43,45 @@ public class DetailSalarieController
     public String createSalarie(final ModelMap model)
     {
         SalarieAideADomicile salarie = new SalarieAideADomicile();
-        model.put("salarie", salarie);
-        model.put("actionUrl", "/salaries/save");
-        return "detail_Salarie";
+        return "/detail_Salarie";
     }
 
     @PostMapping("salaries/save")
-    public String createSalarieBdd(@ModelAttribute SalarieAideADomicile salarie)
+    public String createSalarieBdd(SalarieAideADomicile salarie)
     {
         try
         {
             salarieAideADomicileService.creerSalarieAideADomicile(salarie);
-            return "redirect:/salaries/" + salarie.getId();
         }
-        catch (SalarieException | EntityExistsException exception)
+        catch (SalarieException exception)
         {
-            return "redirect:/salaries/form?error=true";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la création d'un salarie");
         }
+        return "/detail_Salarie";
     }
 
 
 
     //MISE A JOUR SALARIE
-    /*@GetMapping("salaries/1")
-    public String updateSalarie(final ModelMap model, @PathVariable Long id, SalarieAideADomicile salarieAideADomicile)
+    @PostMapping("salaries/{id}")
+    public String updateSalarie(SalarieAideADomicile salarie)
     {
-        SalarieAideADomicile salarie = salarieAideADomicileService.getSalarie(id);
-        model.put("salarie", salarie);
-        model.put("actionUrl", "/salarie/1");  //Add chemin (1 pour create et 1 pour update)
-        //return "detail_Salarie";
-        return "redirect:/salaries/" + salarieAideADomicile.getId();
+        try
+        {
+            salarieAideADomicileService.updateSalarieAideADomicile(salarie);
+        }
+        catch (SalarieException exception)
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la mise à jour d'un salarie");
+        }
+        return "/detail_Salarie";
     }
 
-    @PostMapping("salaries/1")
-    public SalarieAideADomicile updateSalarieBdd(SalarieAideADomicile salarieAideADomicile)
-    {
 
-        //model.put("salarie", salarie);
-        //model.put("actionUrl", "/salarie/save");
-
-        //Redirection vers HTTP GET /salarie/1
-        return salarieAideADomicileService.updateSalarieAideADomicile(salarieAideADomicile);
-    }
-    */
-
-    /*
     //DELETE SALARIE
-    @GetMapping(value="/salaries/1")
+    @GetMapping(value="/salaries/{id}/delete")
     public String deleteSalarie(final ModelMap model, @PathVariable Long id)
     {
-        model.put("actionUrl", "/salaries/1/delete");
-
         try
         {
             salarieAideADomicileService.deleteSalarieAideADomicile(id);
@@ -100,9 +90,9 @@ public class DetailSalarieController
         catch(SalarieException | EntityExistsException exception)
         {
             //Gestion des erreurs
-            return "redirect:/salaries/detail/" + id + "?error=true";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la suppression d'un salarie");
         }
 
     }
-    */
+
 }

@@ -1,12 +1,20 @@
 package com.ipi.jva320.controller;
 
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
+import com.ipi.jva320.model.SalarieAideADomicile;
 import com.ipi.jva320.service.SalarieAideADomicileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Controller
 public class ListSalarieController
@@ -22,19 +30,25 @@ public class ListSalarieController
     }
 
     //RECHERCHE PAR NOM
-    @GetMapping("/salariés?nom={nom}")
-    public String rechercheParNom(final ModelMap model, @Nullable String nom)
+    @GetMapping("/salariés")
+    public String rechercheParNom(final ModelMap model, @Nullable @RequestParam("nom") String nom)
     {
-        if(salarieAideADomicileService.getSalaries(nom) != )
-        {
+            List<SalarieAideADomicile> listNom = salarieAideADomicileService.getSalaries(nom);
 
-        }
-        else
-        {
+            if(nom != null && !nom.isEmpty())
+            {
+                if(listNom.isEmpty())
+                {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Le nom n'a pas été trouvé !");
+                }
 
-        }
-
-        return "list";
+                model.put("salaries", listNom);
+                return "list";
+            }
+            else
+            {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Vous devez rentrer un nom !");
+            }
     }
 
 
