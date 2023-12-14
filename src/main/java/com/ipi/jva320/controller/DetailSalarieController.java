@@ -23,6 +23,7 @@ public class DetailSalarieController
     @GetMapping(value="/salaries/{id}")
     public String detailSalarie(final ModelMap model, @PathVariable Long id)
     {
+        model.put("nbrSalarie", "(" + salarieAideADomicileService.countSalaries() + " salarié(s))");
         SalarieAideADomicile salarie = salarieAideADomicileService.getSalarie(id);
         model.put("salarie", salarie);
         return "detail_Salarie";
@@ -38,7 +39,7 @@ public class DetailSalarieController
     //}
 
 
-    //CREATION SALARIE
+    //CREATION D'UN SALARIE
     @GetMapping("salaries/aide/new")
     public String createSalarie(final ModelMap model)
     {
@@ -55,14 +56,13 @@ public class DetailSalarieController
         }
         catch (SalarieException exception)
         {
+            //Gestion des erreurs
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la création d'un salarie");
         }
         return "/detail_Salarie";
     }
 
-
-
-    //MISE A JOUR SALARIE
+    //MISE A JOUR D'UN SALARIE
     @PostMapping("salaries/{id}")
     public String updateSalarie(SalarieAideADomicile salarie)
     {
@@ -72,13 +72,14 @@ public class DetailSalarieController
         }
         catch (SalarieException exception)
         {
+            //Gestion des erreurs
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la mise à jour d'un salarie");
         }
         return "/detail_Salarie";
     }
 
 
-    //DELETE SALARIE
+    //SUPPRESSION D'UN SALARIE
     @GetMapping(value="/salaries/{id}/delete")
     public String deleteSalarie(final ModelMap model, @PathVariable Long id)
     {
@@ -92,7 +93,7 @@ public class DetailSalarieController
             //Gestion des erreurs
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Erreur lors de la suppression d'un salarie");
         }
-
     }
+
 
 }

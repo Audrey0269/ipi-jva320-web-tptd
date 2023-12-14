@@ -1,6 +1,7 @@
 package com.ipi.jva320.repository;
 
 import com.ipi.jva320.model.SalarieAideADomicile;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,4 +19,5 @@ public interface SalarieAideADomicileRepository extends PagingAndSortingReposito
     Double partCongesPrisTotauxAnneeNMoins1();
 
     List<SalarieAideADomicile> findAllByNom(String nom, Pageable pageable);
+
 }
